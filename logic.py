@@ -170,10 +170,13 @@ def predictAnn(network, X):
 # --------------------- Data Loading and Preprocessing ---------------------
 def load_and_preprocess_data(file_path, percentage):
     # Load the dataset
-    df = pd.read_csv(file_path)  # Replace with your file path
+    df = pd.read_csv(file_path)  
     # Use provided percentage for training data
     if 0 < percentage <= 100:
         df = df.sample(frac=percentage / 100, random_state=42)
+
+    if 'id' in df.columns:
+        df = df.drop('id', axis=1)
 
     # Convert categorical columns to numeric labels
     label_mapping = {}  # To store mapping for the target column
@@ -189,7 +192,7 @@ def load_and_preprocess_data(file_path, percentage):
 
     # Fill NaN values with mean
     for column in df.columns:
-        if df[column].isnull().sum() > 0:  # لو فيه NaN في العمود
+        if df[column].isnull().sum() > 0:  
             mean_val = df[column].mean()
             df[column] = df[column].fillna(mean_val)
 
